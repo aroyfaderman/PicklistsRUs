@@ -1,0 +1,14 @@
+<apex:page controller="BLDR_OptionRenameController" title="Rename Picklist Option">
+    <apex:form >
+    	<apex:pageBlock title="Rename Picklist Option" >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton immediate="true" value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBLockSection >
+        		<apex:inputText label="Picklist Option Display Name" 
+                                value="{!option.recordLabel}" />
+            </apex:pageBLockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

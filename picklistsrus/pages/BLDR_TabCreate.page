@@ -1,0 +1,18 @@
+<apex:page controller="BLDR_TabCreateController"
+           action="{!checkTabNeeded}"
+           title="Create Reusable Picklist Tab For: {!EntityDef.Label}" >
+    <apex:form >
+        <apex:pageBlock title="Create Reusable Picklist Tab For: {!EntityDef.Label}">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Create Custom Tab" action="{!createTab}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="2">
+                <apex:inputCheckbox label="Include Salesforce sidebar" value="{!tab.hasSidebar}" />
+                <apex:selectList label="Tab theme" size="1" value="{!tab.motif}">
+                    <apex:selectOptions value="{!motifs}" />
+                </apex:selectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,17 @@
+<apex:page controller="BLDR_PicklistEditController"
+           title="{!'Edit Reusable Picklist: ' + picklist.recordLabel}"
+           tabStyle="Reusable_Picklists__tab" >
+    <apex:form >
+    	<apex:pageBlock title="{!'Edit Reusable Picklist: ' + picklist.recordLabel}" >
+            <apex:pageBlockButtons >
+            	<apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton value="Cancel" immediate="true" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:inputText label="Label" value="{!picklist.recordLabel}" />
+                <apex:inputText label="Name" value="{!picklist.recordDevName}" />
+                <apex:inputCheckbox label="Sorted Alphabetically" value="{!picklist.alphaSort}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

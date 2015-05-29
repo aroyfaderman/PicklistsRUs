@@ -1,0 +1,25 @@
+<apex:page controller="BLDR_UsageCreateController" tabStyle="Reusable_Picklists__tab"
+           title="{!'Use ' + picklistLabel + ' to Provide Values for a Field'}">
+    <apex:form >
+    	<apex:pageBlock title="{!'Use ' + picklistLabel + ' to Provide Values for a Field'}">
+            <apex:pageMessages id="messages"/>
+            <apex:pageBlockButtons >
+            	<apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton value="Cancel" immediate="true" action="{!cancel}" />
+            </apex:pageBlockButtons>
+        	<apex:pageBlockSection >
+            	<apex:selectList label="SObject Type" size="1" value="{!usage.sObjectType}" >
+                    <apex:actionSupport event="onchange" action="{!calcFieldOptions}" reRender="Field__c" />
+                    <apex:selectOptions value="{!entityOptions}" />
+                </apex:selectList>
+                <apex:selectList label="Field"
+                                 size="1"
+                                 value="{!usage.field}"
+                                 disabled="{!ISBLANK(usage.sObjectType)}"
+                                 id="Field__c">
+                    <apex:selectOptions value="{!fieldOptions}" id="fieldOptions" />
+                </apex:selectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,92 @@
+<apex:page controller="BLDR_PicklistDetailController" title="{! 'Reusable Picklist: ' + picklist.Label}" tabStyle="Reusable_Picklists__tab" >
+    <apex:form >
+    	<apex:pageBlock title="{! 'Reusable Picklist: ' + picklist.Label}" >
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Edit" rendered="{!isCmdEditable[picklistPrefix + picklist.QualifiedApiName]}" action="{!edit}" />
+                <apex:commandButton value="Delete"
+                                    rendered="{!isCmdDeletable[picklistPrefix + picklist.QualifiedApiName]}"
+                                    action="{!deletePicklist}"
+                                    onclick="return window.confirm('Are you sure you want to delete this picklist, with all options and field usages?')"/>
+            	<apex:commandButton value="Back to List"
+                                    immediate="true"
+                                    action="{!backToList}" />
+            </apex:pageBlockButtons>
+        	<apex:pageBlockSection >
+                <apex:outputField value="{!picklist.Label}" />
+                <apex:outputField value="{!picklist.QualifiedApiName}" />
+                <apex:outputField value="{!picklist.AlphaSort__c}" />
+            </apex:pageBlockSection>
+            <br /> 
+            <apex:pageBlockTable value="{!pickOptions}" var="option" headerClass="tertiaryPalette">
+                <apex:facet name="header">
+                    <apex:outputText style="color:white;">Picklist Options</apex:outputText>
+                </apex:facet>
+                <apex:facet name="footer">
+                    <apex:commandButton value="Add Another Option" action="{!createOption}" />
+                </apex:facet>
+                <apex:column >
+                	<apex:image url="/img/indicators/icoManagedRel.gif"
+                                title="Managed - Released"
+                                rendered="{!!isCmdDeletable[optionPrefix + option.QualifiedApiName] && isCmdEditable[optionPrefix + option.QualifiedApiName]}" />
+                    <apex:image url="/img/indicators/icoManagedInstalled.gif"
+                                title="Managed - Installed"
+                                rendered="{!!isCmdEditable[optionPrefix + option.QualifiedApiName]}" />
+                </apex:column>
+                <apex:column >
+                    <apex:commandLink rendered="{!optionCanBeMovedUp[option.Id]}" action="{!moveUp}"  >
+                        <apex:param assignTo="{!selected}" name="selected" value="{!option.Id}" />
+                        <apex:image url="/s.gif" styleClass="upArrowIcon" title="Move Up" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column >
+                	<apex:commandLink rendered="{!optionCanBeMovedDown[option.Id]}" action="{!moveDown}" >
+                        <apex:param assignTo="{!selected}" name="selected" value="{!option.Id}" />
+                        <apex:image url="/s.gif" styleClass="downArrowIcon" title="Move Down" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column >
+                    <apex:commandLink value="Rename" action="{!renameOption}" >
+                    	<apex:param assignTo="{!selected}" name="selected" value="{!option.Id}" />
+                   	</apex:commandLink>
+                </apex:column>
+                <apex:column >
+                    <apex:commandLink value="Delete" 
+                                      rendered="{!isCmdDeletable[optionPrefix + option.QualifiedApiName]}"
+                                      action="{!deleteOption}"
+                                      onclick="return window.confirm('Are you sure?')">
+                        <apex:param assignTo="{!selected}" name="selected" value="{!option.Id}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headerValue="" width="100%" value="{!option.label}" />
+            </apex:pageBlockTable>
+            <br />
+            <apex:pageBlockTable value="{!pickUsages}" var="usage" headerClass="tertiaryPalette">
+                <apex:facet name="header">
+                	<h2>Used For</h2>
+                </apex:facet>
+                <apex:facet name="footer">
+                    <apex:commandButton value="{!newUsageLabel}" action="{!createUsage}" />
+                </apex:facet>
+                <apex:column >
+                	<apex:image url="/img/indicators/icoManagedRel.gif"
+                                title="Managed - Released"
+                                rendered="{!!isCmdDeletable[usagePrefix + usage.QualifiedApiName] && isCmdEditable[usagePrefix + usage.QualifiedApiName]}" />
+                    <apex:image url="/img/indicators/icoManagedInstalled.gif"
+                                title="Managed - Installed"
+                                rendered="{!!isCmdEditable[usagePrefix + usage.QualifiedApiName]}" />
+                </apex:column>
+                <apex:column >
+                    <apex:commandLink value="Delete" 
+                                      rendered="{!isCmdDeletable[usagePrefix + usage.QualifiedApiName]}"
+                                      action="{!deleteUsage}"
+                                      onclick="return window.confirm('Are you sure?')">
+                        <apex:param assignTo="{!selected}" name="selected" value="{!usage.Id}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headerValue="SObject" value="{!usagesToSObjectLabels[usage.Id]}" width="50%" />
+                <apex:column headerValue="Field" value="{!usagesToFieldLabels[usage.Id]}" width="50%" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

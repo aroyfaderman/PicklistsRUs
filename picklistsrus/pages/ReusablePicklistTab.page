@@ -1,0 +1,33 @@
+<apex:page controller="ReusablePicklistTabController" title="{!pageTitle}" >
+  <apex:form >
+    <apex:pageBlock title="{!pageTitle}">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!create}" value="New"
+                            rendered="{!$ObjectType[typeName].createable}" />
+      </apex:pageBlockButtons>
+      <apex:pageBlockTable value="{!records}" var="row" id="thePageBlockTable">
+        <apex:column headerValue="Actions" width="50"
+                     rendered="{!$ObjectType[typeName].updateable || $ObjectType[typeName].deletable}">
+          <apex:commandLink action="{!edit}" value="edit"
+                            rendered="{!$ObjectType[typeName].updateable}">
+            <apex:param assignTo="{!selected}" name="selected"
+                        value="{!row.Id}" />
+          </apex:commandLink>
+          &nbsp;
+          <apex:commandLink action="{!remove}" value="del"
+                            reRender="thePageBlockTable"
+                            rendered="{!$ObjectType[typeName].deletable}">
+            <apex:param assignTo="{!selected}" name="selected"
+                        value="{!row.Id}"/>
+          </apex:commandLink>
+        </apex:column>
+        <apex:column headerValue="{!$ObjectType[typeName].fields.Name.label}">
+          <apex:commandLink action="{!detail}" value="{!row['Name']}" >
+            <apex:param assignTo="{!selected}" name="selected"
+                        value="{!row.Id}"/>
+          </apex:commandLink>
+        </apex:column>
+      </apex:pageBlockTable>    
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

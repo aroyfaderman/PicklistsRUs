@@ -1,0 +1,14 @@
+<apex:page controller="BLDR_OptionCreateController" tabStyle="Reusable_Picklists__tab"
+           title="{!'Create a New Option for ' + picklist.Label}">
+    <apex:form >
+        <apex:pageBlock title="{!'Create a New Option for ' + picklist.Label}">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save" />
+                <apex:commandButton immediate="true" action="{!cancel}" value="Cancel" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:inputText label="Option Name" value="{!option.recordLabel}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

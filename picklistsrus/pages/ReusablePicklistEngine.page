@@ -1,0 +1,39 @@
+<apex:page controller="ReusablePicklistController" title="{!title}" >
+  <apex:form >
+    <apex:pageBlock title="{!title}" >
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!save}" value="Save"
+                            rendered="{!!readonly}"/>
+        <apex:commandButton action="{!saveAndNew}" value="Save And New"
+                            rendered="{!!readonly && $ObjectType[typeName].createable}" />
+        <apex:commandButton action="{!cancel}" immediate="true" value="Cancel"
+                            rendered="{!!readonly}" />
+        <apex:commandButton action="{!edit}" value="Edit"
+                            rendered="{!readonly && $ObjectType[typeName].updateable}" />
+        <apex:commandButton action="{!remove}" value="Delete"
+                            rendered="{!readonly && $ObjectType[typeName].deletable}" />
+      </apex:pageBlockButtons>
+      <apex:pageBlockSection columns="2">
+        <apex:inputField value="{!record['Name']}" rendered="{!!readonly}" />
+        <apex:outputField value="{!record['Name']}" rendered="{!readonly}" />
+        <apex:repeat value="{!fieldNamesFixedOrder}" var="fieldName">
+          <apex:inputField value="{!record[fieldName]}"
+                           rendered="{!!doesFieldUsePicklist[fieldName] && !readOnly}"
+                            />
+          <apex:outputField value="{!record[fieldName]}"
+                            rendered="{!!doesFieldUsePicklist[fieldName] && readOnly}"
+                             />
+          <apex:pageBlockSectionItem rendered="{!doesFieldUsePicklist[fieldName]}">
+            <apex:outputLabel for="ourPicklist"
+                              value="{!$ObjectType[typeName].fields[fieldName].Label}"/>
+            <apex:selectList id="ourPicklist" value="{!record[fieldName]}"
+                             size="1" readOnly="{!readOnly}"
+                             disabled="{!readOnly}" >
+              <apex:selectOptions value="{!selectOptionsByPicklist[picklistsByField[fieldName]]}"/>
+            </apex:selectList>
+          </apex:pageBlockSectionItem>
+        </apex:repeat>
+      </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

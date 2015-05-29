@@ -1,0 +1,48 @@
+<apex:page controller="BLDR_ReusablePicklistsListController" title="Reusable Picklists" tabStyle="Reusable_Picklists__tab" >
+    <apex:form >
+    	<apex:pageBlock title="Reusable Picklists">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton value="New" action="{!URLFOR($Page.BLDR_PicklistCreate)}" />
+            </apex:pageBlockButtons>
+        	<apex:pageBlockTable value="{!picklists}" var="picklist">
+                <apex:column >
+                	<apex:image url="/img/indicators/icoManagedRel.gif"
+                                title="Managed - Released"
+                                rendered="{!!isCmdDeletable[picklistPrefix + picklist.QualifiedApiName] && isCmdEditable[picklistPrefix + picklist.QualifiedApiName]}" />
+                    <apex:image url="/img/indicators/icoManagedInstalled.gif"
+                                title="Managed - Installed"
+                                rendered="{!!isCmdEditable[picklistPrefix + picklist.QualifiedApiName]}" />
+                </apex:column>
+                <apex:column >
+                	<apex:commandLink value="Del" 
+                                      rendered="{!isCmdDeletable[picklistPrefix + picklist.QualifiedApiName]}"
+                                      action="{!deletePicklist}"
+                                      onclick="return window.confirm('Are you sure?')">
+                        <apex:param assignTo="{!selectedId}" name="selectedId"
+                        	value="{!picklist.Id}"/>
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column >
+                    <!-- We use deletable rather than editable since changing Sorted 
+                         Alphabetically on a released picklist could cause problems with
+                         Subscriber-added values -->
+                    <apex:commandLink value="Edit"
+                                      rendered="{!isCmdDeletable[picklistPrefix + picklist.QualifiedApiName]}"
+                                      action="{!edit}">
+                        <apex:param assignTo="{!selectedId}" name="selectedId"
+                        	value="{!picklist.Id}"/>
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headerValue="Label" width="50%">
+                    <apex:commandLink value="{!picklist.Label}" action="{!detail}" >
+                        <apex:param assignTo="{!selectedApiName}" name="selectedApiName"
+                        	value="{!picklist.QualifiedApiName}" />
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column value="{!picklist.NamespacePrefix}" width="25%" />
+                <apex:column value="{!picklist.DeveloperName}" width="25%" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

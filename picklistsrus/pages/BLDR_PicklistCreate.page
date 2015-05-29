@@ -1,0 +1,22 @@
+<apex:page controller="BLDR_PicklistCreateController" title="New Reusable Picklist" tabStyle="Reusable_Picklists__tab" >
+    <apex:form >
+        <apex:pageBlock title="New Reusable Picklist">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+            	<apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton value="Cancel" immediate="true" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:inputText label="Label" value="{!picklist.recordLabel}" required="true" >
+                	<apex:actionSupport event="onchange" action="{!defaultName}" reRender="DeveloperName"
+                                        id="MasterLabel" />
+                </apex:inputText>
+                <apex:inputText label="Unique Name" value="{!picklist.recordDevName}" id="DeveloperName" />
+                <apex:inputCheckbox label="Sort Alphabetically" value="{!picklist.alphaSort}" id="AlphaSort__c" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Picklist Options" id="PicklistOptions" >
+            	<apex:inputTextArea cols="80" rows="20" value="{!optionsToParse}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
